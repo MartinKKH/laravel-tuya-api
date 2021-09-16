@@ -26,7 +26,9 @@ class LaravelTuyaApiUnitTest extends TestCase{
 
     public function testCall(): void {
         $client = $this->getApiClient();
-        $client->call(GetToken::class, ['grant_type' => 1]);
-        $this->assertTrue(true);
+        $accessToken = $client->call(GetToken::class, ['grant_type' => 1]);
+
+     
+        $this->assertNotNull($accessToken);
     }
 }

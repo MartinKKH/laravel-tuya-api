@@ -35,8 +35,14 @@ class LaravelTuyaApi
                 if ($result['success'] === false) {
                     throw new \Exception($result['msg']);
                 }
+                $var1 = [AuthorizationManagement\GetToken::class];
+                $var2 = $serviceClass;
+                $var3 = isset($result['result']['access_token']);
+
+
                 if (in_array($serviceClass, [AuthorizationManagement\GetToken::class]) && isset($result['result']['access_token'])) {
-                    self::$accessToken = $result['result']['access_token'];
+                    $accessToken = $result['result']['access_token'];
+                    self::$accessToken = $accessToken;
                 }
                 return $result;
      
