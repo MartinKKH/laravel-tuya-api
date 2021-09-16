@@ -1,0 +1,1 @@
+{"version":1,"defects":[],"times":{"GetTokenTest::testSignUrlMatch":0.043,"LaravelTuyaApiUnitTest::testClientIdMatch":0.004,"LaravelTuyaApiUnitTest::testSecretMatch":0.004,"LaravelTuyaApiUnitTest::testCall":0.201}}
