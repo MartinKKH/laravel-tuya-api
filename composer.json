@@ -1,11 +1,10 @@
 {
-    "name": "givenergy/laravel-tuya-api",
+    "name": "martinkkh/laravel-tuya-api",
     "description": "Tuya Api with laravel framework",
     "keywords": [
         "givenergy",
         "laravel-tuya-api"
     ],
-    "homepage": "https://github.com/givenergy/laravel-tuya-api",
     "license": "MIT",
     "type": "library",
     "authors": [
