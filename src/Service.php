@@ -68,7 +68,7 @@ abstract class Service
         if ($this->requiredAccessToken) {
             $string = $this->clientId . $this->accessToken . $currentTime . $this->nouce . $this->stringToSign;
         } else {
-            $string = $this->clientId . $currentTime . $this->stringToSign;
+            $string = $this->clientId . $currentTime . $this->nouce . $this->stringToSign;
         }
 
         $sig = hash_hmac('sha256', $string, $this->secret);

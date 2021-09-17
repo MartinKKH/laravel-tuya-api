@@ -18,6 +18,7 @@ class LaravelTuyaApiUnitTest extends TestCase{
     {
         $client = $this->getApiClient();
         $this->assertEquals($client->clientId, getenv('CLIENT_ID'));
+
     }
     public function testSecretMatch(): void
     {
@@ -25,23 +26,20 @@ class LaravelTuyaApiUnitTest extends TestCase{
         $this->assertEquals($client->secret, getenv('SECRET'));
     }
 
-    /**
-     * @depends testClientIdMatch
-     * @depends testSecretMatch
-     */
-    public function testGetToken(): void {
+ 
+    public function testGetToken(): LaravelTuyaApi {
         $params = ['grant_type' => 1];
         $client = $this->getApiClient();
         $result = $client->call(GetToken::class,$params);
         $accessToken = $result["result"]["access_token"];
         $this->assertNotNull($accessToken);
+        return $client;
     }
     
     /**
      * @depends testGetToken
      */
     public function testDeviceInfo($client): void {
-       
         $deviceId = getenv('DEVICE_ID');
         // $result = $client->call(GetToken::class, ['grant_type' => 1]);
         // $accessToken = $result["result"]["access_token"];
