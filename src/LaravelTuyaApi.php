@@ -41,16 +41,12 @@ class LaravelTuyaApi
                 unset($req['url']);
                 unset($req['method']);
 
-                $request2 = Http::withHeaders($req['headers']);
-
                 $request = Http::withHeaders($req['headers'])->get($url, $req['query']);
                 
                 $result = $request->json();
                 if ($result['success'] === false) {
                     throw new \Exception($result['msg']);
                 }
-
-
 
                 if (in_array($serviceClass, [AuthorizationManagement\GetToken::class]) && isset($result['result']['access_token'])) {
                     $accessToken = $result['result']['access_token'];

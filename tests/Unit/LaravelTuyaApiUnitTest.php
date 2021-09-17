@@ -41,12 +41,9 @@ class LaravelTuyaApiUnitTest extends TestCase{
      */
     public function testDeviceInfo($client): void {
         $deviceId = getenv('DEVICE_ID');
-        // $result = $client->call(GetToken::class, ['grant_type' => 1]);
-        // $accessToken = $result["result"]["access_token"];
-
-        // $client->setAccessToken($accessToken);
-        $client->call(DeviceInfo::class, $deviceId);
-        $this->assertTrue(true);
+        $result = $client->call(DeviceInfo::class, $deviceId);
+        $this->assertNotNull($result);
+        $this->assertTrue($result['success']);
 
     }
 }

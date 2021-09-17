@@ -89,11 +89,14 @@ abstract class Service
             't' => $currentTime,
             'sign_method' => 'HMAC-SHA256',
             'nouce' => $this->nouce,
-            'stringToSign' => $this->stringToSign
         ];
 
         if (!empty($this->accessToken)) {
+            
             $addHeaders['access_token'] = $this->accessToken;
+        }else{
+            /// stringToSign is not required for GetToken
+            $addHeaders['stringToSign'] = $this->stringToSign;
         }
 
 
