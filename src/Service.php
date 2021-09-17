@@ -26,7 +26,7 @@ abstract class Service
 
     public function __construct($params)
     {
-        $this->params = $params;
+        
     }
 
     public final function __toArray()
@@ -66,7 +66,7 @@ abstract class Service
         }
 
         if ($this->requiredAccessToken) {
-            $string = $this->clientId . $this->accessToken . $currentTime;
+            $string = $this->clientId . $this->accessToken . $currentTime . $this->nouce . $this->stringToSign;
         } else {
             $string = $this->clientId . $currentTime . $this->stringToSign;
         }
@@ -100,7 +100,7 @@ abstract class Service
         return $addHeaders + $this->headers;
     }
 
-    protected function getUrl()
+    public function getUrl()
     {
         return $this->getUri() . '/' . $this->getPath();
     }
@@ -115,28 +115,6 @@ abstract class Service
         return $this->region;
     }
 
-    public function getSignUrl()
-    {
-        $bodystr = '';
-        foreach ($this->params as $key => $value) {
-            $bodystr = $bodystr . $key . '=' . $value . "&";
-        }
-        if(empty($bodystr)){
-            return '/' . $this->path;
-        }else{
-            return '/' . $this->path . '?' . substr($bodystr, 0, -1);
-        }
-    }
-
-    public function setStringToSign()
-    {
-        $method = $this->method;
-        $contentHash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
-        $signUrl = $this->getSignUrl();
-
-        $this->stringToSign = $method . "\n" . $contentHash . "\n" . "" . "\n" . $signUrl;
-
-    }
 
     protected function getPath()
     {
@@ -161,6 +139,29 @@ abstract class Service
     public function setSecret($secret)
     {
         $this->secret = $secret;
+    }
+
+    public function getSignUrl()
+    {
+        $bodystr = '';
+        foreach ($this->params as $key => $value) {
+            $bodystr = $bodystr . $key . '=' . $value . "&";
+        }
+        if (empty($bodystr)) {
+            return '/' . $this->getPath();
+        } else {
+            return '/' . $this->getPath() . '?' . substr($bodystr, 0, -1);
+        }
+    }
+
+    public function setStringToSign()
+    {
+        $method = $this->method;
+        $contentHash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+        $signUrl = $this->getSignUrl();
+
+
+        $this->stringToSign = $method . "\n" . $contentHash . "\n" . "" . "\n" . $signUrl;
     }
 
 }

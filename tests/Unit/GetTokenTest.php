@@ -2,7 +2,7 @@
 
 use Givenergy\LaravelTuyaApi\Tests\TestCase;
 use Givenergy\LaravelTuyaApi\AuthorizationManagement\GetToken;
-use Givenergy\LaravelTuyaApi\Service;
+
 
 class GetTokenTest  extends TestCase{
     
@@ -12,5 +12,6 @@ class GetTokenTest  extends TestCase{
         $signUrl = $service->getSignUrl();
         $this->assertEquals($signUrl, '/v1.0/token?grant_type=1'); 
     }
+
 
 }

@@ -1,6 +1,7 @@
 <?php
 
 use Givenergy\LaravelTuyaApi\AuthorizationManagement\GetToken;
+use Givenergy\LaravelTuyaApi\DeviceControl\DeviceInfo;
 use Givenergy\LaravelTuyaApi\LaravelTuyaApi;
 use Givenergy\LaravelTuyaApi\Tests\TestCase;
 
@@ -24,11 +25,26 @@ class LaravelTuyaApiUnitTest extends TestCase{
         $this->assertEquals($client->secret, getenv('SECRET'));
     }
 
-    public function testCall(): void {
+    public function testGetToken(): void {
+        $params = ['grant_type' => 1];
         $client = $this->getApiClient();
-        $accessToken = $client->call(GetToken::class, ['grant_type' => 1]);
+        $result = $client->call(GetToken::class,$params);
+        $accessToken = $result["result"]["access_token"];
 
-     
+        putenv("ACCESS_TOKEN=$accessToken");
         $this->assertNotNull($accessToken);
+    }
+
+    public function testDeviceInfo(): void {
+       
+        $deviceId = getenv('DEVICE_ID');
+        $client = $this->getApiClient();
+        $result = $client->call(GetToken::class, ['grant_type' => 1]);
+        $accessToken = $result["result"]["access_token"];
+
+        $client->setAccessToken($accessToken);
+        $client->call(DeviceInfo::class, $deviceId);
+        $this->assertTrue(true);
+
     }
 }

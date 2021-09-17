@@ -16,7 +16,7 @@
 <php>
         <env name="CLIENT_ID" value="kcavgk7wawqh5dxahqu2"/>
         <env name="SECRET" value="da12360f073941cd85c332591571d5a7" />
-        <env name="TUYA_COUNTRYCODE" value="" />
+        <env name="DEVICE_ID" value="03001768c4dd573e579a" />
     </php>
   <coverage>
     <include>

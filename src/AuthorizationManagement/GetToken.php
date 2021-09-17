@@ -7,4 +7,12 @@ class GetToken extends Service{
     protected $method = 'GET';
     protected $path = 'v1.0/token';
     protected $requiredAccessToken = false;
+
+    public function __construct($params)
+    {
+        $this->params = $params;
+    }
+
+   
+
 }
