@@ -1,7 +1,10 @@
 <?php
 
 use Givenergy\LaravelTuyaApi\AuthorizationManagement\GetToken;
+use Givenergy\LaravelTuyaApi\DeviceControl\ControlDevice;
+use Givenergy\LaravelTuyaApi\DeviceControl\DeviceFunction;
 use Givenergy\LaravelTuyaApi\DeviceControl\DeviceInfo;
+use Givenergy\LaravelTuyaApi\DeviceControl\DeviceStatus;
 use Givenergy\LaravelTuyaApi\LaravelTuyaApi;
 use Givenergy\LaravelTuyaApi\Tests\TestCase;
 
@@ -18,6 +21,7 @@ class LaravelTuyaApiUnitTest extends TestCase{
     {
         $client = $this->getApiClient();
         $this->assertEquals($client->clientId, getenv('CLIENT_ID'));
+
     }
     public function testSecretMatch(): void
     {
@@ -25,26 +29,59 @@ class LaravelTuyaApiUnitTest extends TestCase{
         $this->assertEquals($client->secret, getenv('SECRET'));
     }
 
-    public function testGetToken(): void {
+ 
+    public function testGetToken(): LaravelTuyaApi {
         $params = ['grant_type' => 1];
         $client = $this->getApiClient();
         $result = $client->call(GetToken::class,$params);
         $accessToken = $result["result"]["access_token"];
-
-        putenv("ACCESS_TOKEN=$accessToken");
         $this->assertNotNull($accessToken);
+        return $client;
+    }
+    
+    /**
+     * @depends testGetToken
+     */
+    public function testDeviceInfo($client): void {
+        $deviceId = getenv('DEVICE_ID');
+        $result = $client->call(DeviceInfo::class, $deviceId);
+        $this->assertNotNull($result);
+        $this->assertTrue($result['success']);
+
     }
 
-    public function testDeviceInfo(): void {
-       
+    /**
+     * @depends testGetToken
+     */
+    public function testDeviceFunction($client): void
+    {
         $deviceId = getenv('DEVICE_ID');
-        $client = $this->getApiClient();
-        $result = $client->call(GetToken::class, ['grant_type' => 1]);
-        $accessToken = $result["result"]["access_token"];
+        $result = $client->call(DeviceFunction::class, $deviceId);
+        $this->assertNotNull($result);
+        $this->assertTrue($result['success']);
+    }
 
-        $client->setAccessToken($accessToken);
-        $client->call(DeviceInfo::class, $deviceId);
-        $this->assertTrue(true);
+    /**
+     * @depends testGetToken
+     */
+    public function testDeviceStatus($client): void
+    {
+        $deviceId = getenv('DEVICE_ID');
+        $result = $client->call(DeviceStatus::class, $deviceId);
+        $this->assertNotNull($result);
+        $this->assertTrue($result['success']);
+    }
 
+    /**
+     * @depends testGetToken
+     */
+    public function testControlDevice($client): void
+
+        
+    {
+        $deviceId = getenv('DEVICE_ID');
+        $result = $client->call(ControlDevice::class, [$deviceId, ['commands' => [['code' => 'switch_1', 'value' => true]]]]);
+        $this->assertNotNull($result);
+        $this->assertTrue($result['success']);
     }
 }

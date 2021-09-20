@@ -64,13 +64,11 @@ abstract class Service
         if ($this->requiredAccessToken && empty($this->accessToken)) {
             throw new Exception("Access token required");
         }
-
         if ($this->requiredAccessToken) {
             $string = $this->clientId . $this->accessToken . $currentTime . $this->nouce . $this->stringToSign;
         } else {
-            $string = $this->clientId . $currentTime . $this->stringToSign;
+            $string = $this->clientId . $currentTime . $this->nouce . $this->stringToSign;
         }
-
         $sig = hash_hmac('sha256', $string, $this->secret);
         return strtoupper($sig);
     }
@@ -89,14 +87,14 @@ abstract class Service
             't' => $currentTime,
             'sign_method' => 'HMAC-SHA256',
             'nouce' => $this->nouce,
-            'stringToSign' => $this->stringToSign
         ];
 
         if (!empty($this->accessToken)) {
             $addHeaders['access_token'] = $this->accessToken;
+        }else{
+            /// stringToSign is required for GetToken
+            $addHeaders['stringToSign'] = $this->stringToSign;
         }
-
-
         return $addHeaders + $this->headers;
     }
 
@@ -114,7 +112,6 @@ abstract class Service
     {
         return $this->region;
     }
-
 
     protected function getPath()
     {
@@ -144,9 +141,12 @@ abstract class Service
     public function getSignUrl()
     {
         $bodystr = '';
-        foreach ($this->params as $key => $value) {
+        
+
+        foreach ($this->getParams() as $key => $value) {
             $bodystr = $bodystr . $key . '=' . $value . "&";
         }
+        
         if (empty($bodystr)) {
             return '/' . $this->getPath();
         } else {
@@ -156,10 +156,19 @@ abstract class Service
 
     public function setStringToSign()
     {
-        $method = $this->method;
-        $contentHash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
-        $signUrl = $this->getSignUrl();
+        $bodystr = '';
+        $method = $this->getMethod();
+        if($method == 'JSON'){
+            $method = 'POST';
+            $bodystr = $this->getParams();
+    
+        }
 
+        $contentHash  = hash('sha256', $bodystr );
+
+
+        // $contentHash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+        $signUrl = $this->getSignUrl();
 
         $this->stringToSign = $method . "\n" . $contentHash . "\n" . "" . "\n" . $signUrl;
     }
