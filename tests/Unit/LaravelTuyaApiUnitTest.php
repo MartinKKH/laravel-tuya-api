@@ -1,7 +1,10 @@
 <?php
 
 use Givenergy\LaravelTuyaApi\AuthorizationManagement\GetToken;
+use Givenergy\LaravelTuyaApi\DeviceControl\ControlDevice;
+use Givenergy\LaravelTuyaApi\DeviceControl\DeviceFunction;
 use Givenergy\LaravelTuyaApi\DeviceControl\DeviceInfo;
+use Givenergy\LaravelTuyaApi\DeviceControl\DeviceStatus;
 use Givenergy\LaravelTuyaApi\LaravelTuyaApi;
 use Givenergy\LaravelTuyaApi\Tests\TestCase;
 
@@ -45,5 +48,40 @@ class LaravelTuyaApiUnitTest extends TestCase{
         $this->assertNotNull($result);
         $this->assertTrue($result['success']);
 
+    }
+
+    /**
+     * @depends testGetToken
+     */
+    public function testDeviceFunction($client): void
+    {
+        $deviceId = getenv('DEVICE_ID');
+        $result = $client->call(DeviceFunction::class, $deviceId);
+        $this->assertNotNull($result);
+        $this->assertTrue($result['success']);
+    }
+
+    /**
+     * @depends testGetToken
+     */
+    public function testDeviceStatus($client): void
+    {
+        $deviceId = getenv('DEVICE_ID');
+        $result = $client->call(DeviceStatus::class, $deviceId);
+        $this->assertNotNull($result);
+        $this->assertTrue($result['success']);
+    }
+
+    /**
+     * @depends testGetToken
+     */
+    public function testControlDevice($client): void
+
+        
+    {
+        $deviceId = getenv('DEVICE_ID');
+        $result = $client->call(ControlDevice::class, [$deviceId, ['commands' => [['code' => 'switch_1', 'value' => true]]]]);
+        $this->assertNotNull($result);
+        $this->assertTrue($result['success']);
     }
 }
