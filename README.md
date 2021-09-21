@@ -10,7 +10,7 @@ Tuya API script using laravel backend
 You can install the package via composer:
 
 ```bash
-composer require givenergy/laravel-tuya-api
+composer require martinkkh/laravel-tuya-api
 ```
 
 ## Usage
