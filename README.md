@@ -15,7 +15,7 @@ Add the following to `"repositories"` in composer.json
 }
 ```
 
-Install the package via composer:
+then install the package via composer:
 
 ```bash
 composer require martinkkh/laravel-tuya-api
