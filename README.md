@@ -23,12 +23,35 @@ composer require martinkkh/laravel-tuya-api
 
 ## Usage
 
+This package implements the API listed in the [Tuya Smart Home APIs](https://developer.tuya.com/en/docs/iot/industrial-general-api?id=Kainbj5886ptz#title-1-Smart%20home%20APIs).
+
+You are required to create a [Tuya Cloud account](https://developer.tuya.com/en/docs/iot/quick-start1?id=K95ztz9u9t89n) to obtain the `client_id` and `secret` of your own project.
+
+Example
+
 ```php
-// Usage description here
+
+  /// Initistaion
+  $client = new LaravelTuyaApi($clientId, $secret);
+   
+  /// Generate API Token
+  $client->call(GetToken::class,$params);
+  
+  /// Get Device Info
+  $deviceInfo = $client->call(DeviceInfo::class, $deviceId);
+
 ```
 
 ### Testing
 
+Rename phpunit.xml.dist to phpunit.xml and edit your own configurations.
+
+```
+<env name="CLIENT_ID" value={YOUR_OWN_CLIEN_ID}/>
+<env name="SECRET" value={YOUR_OWN_SECRET} />
+<env name="DEVICE_ID" value={DEVICE_ID} />
+```
+Run the test in the command line.
 ```bash
 composer test
 ```
