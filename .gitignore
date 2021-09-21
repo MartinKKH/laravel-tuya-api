@@ -19,5 +19,6 @@ Homestead.json
 .vscode/
 
 # PHPUnit
+/phpunit.xml
 /.phpunit.cache
 .phpunit.result.cache

@@ -154,6 +154,9 @@ abstract class Service
         }
     }
 
+
+
+
     public function setStringToSign()
     {
         $bodystr = '';
@@ -161,13 +164,8 @@ abstract class Service
         if($method == 'JSON'){
             $method = 'POST';
             $bodystr = $this->getParams();
-    
         }
-
         $contentHash  = hash('sha256', $bodystr );
-
-
-        // $contentHash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
         $signUrl = $this->getSignUrl();
 
         $this->stringToSign = $method . "\n" . $contentHash . "\n" . "" . "\n" . $signUrl;
