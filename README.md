@@ -11,7 +11,7 @@ Add the following to `"repositories"` in composer.json
 ```
 {
   "type": "github",
-  "url": "hhttps://github.com/MartinKKH/laravel-tuya-api/"
+  "url": "https://github.com/MartinKKH/laravel-tuya-api/"
 }
 ```
 
