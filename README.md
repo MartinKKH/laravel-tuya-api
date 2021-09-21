@@ -7,7 +7,15 @@
 Tuya API script using laravel backend
 ## Installation
 
-You can install the package via composer:
+Add the following to `"repositories"` in composer.json
+```
+{
+  "type": "github",
+  "url": "hhttps://github.com/MartinKKH/laravel-tuya-api/"
+}
+```
+
+Install the package via composer:
 
 ```bash
 composer require martinkkh/laravel-tuya-api
